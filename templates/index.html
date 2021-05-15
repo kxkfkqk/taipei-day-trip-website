@@ -1,0 +1,662 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>台北一日遊-首頁</title>
+<style type="text/css">
+#black{
+	display: none;
+	position: fixed;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100vmax;
+	background-color: black; 
+	z-index: 900;
+	-moz-opacity: 80;
+	opacity: .50;
+	filter: alpha(opacity=50);
+}
+body{
+	margin:0;
+}
+a{
+	text-decoration:none;
+
+}
+#singup{
+	z-index: 999;
+	display: none;
+	padding:15px;
+	position: fixed;top:80px;left:790px;
+	width:310px;height:302px;
+	background:#ffffff;
+}
+#singin{
+	z-index: 999;
+	display: none;
+	padding:15px;
+	position: fixed;top:80px;left:790px;
+	width:310px;height:245px;
+	background:#ffffff;
+}
+.color{
+	position: fixed;top:70px;left:790px;
+	background:linear-gradient(135deg, #AADDEE 0%, #66AABB 100%) ;
+	height:10px;width:340px;
+}
+#singin button, #singup button{
+	position:absolute;top:20px;left:310px;
+	width:16px;height:16px;
+	margin:0;padding:0;
+	outline:none;border:none;
+	background:url(/close.png)no-repeat;
+	background-size: 16px 16px;
+	
+}
+.singin1, .singup1{
+	text-align: center;
+	font-size: 24px;
+	font-weight: bold;
+	width:310px;
+}
+#singin2{
+	height:166px;
+	font-size: 24px;
+	font-weight: bold;
+	width:310px;
+}
+#singup2{
+	height:218px;
+	font-size: 24px;
+	font-weight: bold;
+	width:310px;
+}
+.inputspace{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 1px solid #CCCCCC;
+	box-sizing: border-box;
+	border-radius: 5px;
+	height:47px;
+	width:310px;
+	color: #666666;
+}
+#singin2 input[type = "submit"], #singup2 input[type = "submit"]{
+	color:#ffffff;
+	font-size:19px;
+	outline:none;
+	border:none;
+	border-radius: 5px;
+	width:310px;margin-top: 5px;
+	height:47px;
+	background-color: #448899;
+	z-index:999;
+}
+.singin3, .singup3{
+	margin-top: 10px;
+	height:22px;
+	text-align: center;
+}
+.singin3 input[type = "button"], .singup3 input[type = "button"]{
+	margin:0;border:none;
+	outline:none;padding:0;
+	font-size: 16px;
+	background:#ffffff;
+	cursor: pointer;
+}
+#second{
+	display:flex;
+	justify-content: center;	
+	align-items: center;		 
+	height: 320px;
+	background:url(/welcome.png)no-repeat, linear-gradient(135deg, #AADDEE 0%, #66AABB 100%) no-repeat;
+	background-size: 650px 320px,1920px 320px;
+	background-position: bottom 0px left 1038px,0px 0px;
+	
+}
+.patternoutside{
+	width: 60px;
+	height: 46px;
+
+	background: #448899;
+}
+
+.secondinside{
+	display:flex;flex-wrap: wrap;
+	margin-right: auto;margin-left: auto;
+}
+.seconda{
+	display: flex;flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	margin-right: auto;margin-left: auto;
+	width: 1200px;
+	height:190px;
+}
+
+.seconda1{
+	width:1180px;
+	font-weight: bold;
+	font-size: 28px;
+	color: #F8F8F8;
+}
+.seconda2{
+	width:1180px;
+	font-size: 16px;
+	color: #F8F8F8;
+}
+.seconda3{
+	display:flex;
+	width:1180px;
+}
+.second3 img {
+	width: 30px;
+	height: 30px;
+	
+}
+button[type = submit]{
+	-webkit-appearance:none;
+	width: 60px;
+	background:url(/big.png)no-repeat center, #448899 ;
+	background-size: 30px 30px,60px 46px;
+	border:1px solid  #448899;
+	outline: none;
+}
+.seconda3 input{
+	width: 400px;
+	height: 40px;
+}
+
+input::-webkit-input-placeholder {
+	width:370px;
+    font-size: 16px;
+	color: #757575;
+	font-weight: bold;
+}
+
+.position{
+	position:fixed; top:0;z-index: 888;
+	width:100%;
+	background: #FFffff;
+}
+.top{
+    margin-right: auto;margin-left: auto;
+	display:flex;
+	justify-content: flex-end;
+	align-items: center;
+    width: 1200px;
+    height:54px;
+    background: #FFffff;
+	
+}
+.top button{
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+	border: none;  
+	outline: none;
+	background-color: #ffffff;    
+}
+.topleft{
+	flex:auto;
+    width:150px;
+	height:34px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 34px;
+	color: #448899;
+}		
+.topmiddle{
+	text-align: center;      
+	width:90px;
+	height:34px;
+	line-height: 34px; 
+    flex: none;
+}
+#topright{     
+	text-align: center;
+	width:90px;
+	height:34px;
+	line-height: 34px; 
+    flex: none;cursor: pointer;
+}	
+#photot{		/*  照片容器 */
+	width:1200px;
+	display:flex;flex-wrap:wrap;
+	justify-content: center;
+	align-items: center;
+	margin-right:auto;margin-left:auto;
+	position: relative;top:64px;
+}
+#photot>.gallery{
+	margin-bottom: 30px;margin-left: auto;margin-right: auto;		
+	width:268px;
+	height:242px;
+	border: 1px solid #ccc;
+}
+
+.gallery img{		
+	width:100%;
+	height:160px;
+	
+}
+.gallery>.desc{			
+	width:242px;margin-right: auto;margin-left: auto;
+	font-weight: bold;
+	color: #757575;
+	position: relative;top:-4px;
+	display: flex;align-items: center;
+	height:41px;
+}
+.gallery>.desc2{
+	margin-right: auto;margin-left: auto;
+	display:flex;
+	justify-content: end;
+	height:41px;
+	width: 242px;
+	position: relative;top:-4px;
+}
+.gallery>.desc2>.desc21{
+	flex:auto;
+	line-height: 41px;
+	color: #757575;
+}
+.gallery>.desc2>.desc22{
+	flex:flex-end;
+	line-height: 41px;
+	color: #757575;
+}
+.bottom{
+	position: relative;top:80px;
+	width: 100%;
+	height: 100px;
+	line-height: 100px;
+	background: #757575;
+}
+.bottomword{
+	margin-right:auto;margin-left:auto;
+	width: 284px;
+	height: 14px;
+	font-weight: bold;
+	font-size: 16px;
+	color: #FFFFFF;
+}
+.result{
+	text-align: center;
+	font-Size: 16px;
+	color: #00EC00;
+}
+@media screen and (max-width:1200px){
+	.top{
+		width:100%;
+	}
+	#photot{
+		width:90%;
+	}
+	#second{
+		height:280px;
+		background-size: 276px 148px,1920px 320px;
+		background-position: bottom 0px left 100%,0px 0px;
+	}
+	#photot>#gallery{
+		width:90%;
+	}
+	#photot>.gallery img{
+        object-fit: cover;
+	}
+	.seconda{
+		width:90%;
+	}
+	#singin, #singup, .color{
+		left:200px;
+	}
+}				
+@media screen and (max-width:600px){			
+	.second{
+		width:100%;
+	}
+	#singin, #singup, .color{
+		left:10px;
+	}
+}  
+</style>
+<script type="text/javascript">
+var auto = setInterval(autopage, 800)
+function autopage(){
+	let ele = document.getElementById("bottom");
+	let position = ele.getBoundingClientRect().top;
+	if (position < 670){
+		if (keyword === undefined){
+			data += 1;
+			page += 1;
+			get(page,data);
+		}else{
+			data += 1;
+			page += 1;
+			get((page + keyword),data);
+		}
+	}
+}
+window.addEventListener("load", function(){
+	let form = document.getElementById("myform");
+	form.addEventListener("click",function(e){
+		e.preventDefault();
+	})
+	let black = document.getElementById("black");
+	let singin = document.getElementById("singin");
+	let singup = document.getElementById("singup");
+	black.addEventListener("click", e => {
+		black.style.display = "none";
+		document.body.style.overflow = "auto";
+		singin.style.display = "none";
+		singup.style.display = "none";
+	})
+	function checksingin(){
+		fetch("/api/user"
+		).then(response => response.json()).then((result) => {
+			state = result["data"]
+			let topright = document.getElementById("topright");
+			topright.innerHTML = "";
+			if(state !== null){
+				let word = document.createTextNode("登出系統")
+				topright.appendChild(word)
+			}else{
+				let word = document.createTextNode("登入/住宿")
+				topright.appendChild(word)
+			}
+		})
+	}
+	checksingin();
+	get(page,data);
+})
+
+function get(page,data){
+	let src = "/api/attractions?page=" + page;	
+	fetch(src).then(response => response.json()).then((result) => {
+		var count = 0;
+		data = (data * 12) + 1;
+		while(count < 12){
+			//第一階段,先判斷有無資訊
+			if (result["error"]){
+				let word = document.createTextNode("找不到相關資料");
+				let where = document.getElementById("photot");
+				let nothingdiv = document.createElement("dvi")
+				nothingdiv.style.fontSize = "100px" ; 
+				nothingdiv.appendChild(word);
+				where.appendChild(nothingdiv);
+				break ;
+			}else{
+				//第二階段,判斷有沒有真的12筆資料和開始塞入資料
+				if (result["data"][count] === undefined){
+					break ;
+				}else{
+					//賦予超連結及標籤編號,還有選擇器gallery
+					let photot = document.getElementById("photot"); 
+					let number = result["data"][count]["id"];
+					let a = document.createElement("a");
+					photot.appendChild(a);
+					a.setAttribute("id","register" + data);
+					a.className = "gallery";
+					a.href = "/attraction/" + number;
+					//圖片
+					let p = result["data"][count]["imgages"][0];
+					let pattern = document.createElement("img");				        
+					pattern.src = "http" + p.split("http")[1];
+					a.appendChild(pattern);
+					//第一段描述
+					let w=result["data"][count]["name"];  				
+					let word=document.createElement("div");				
+					let node=document.createTextNode(w);				
+					word.appendChild(node);								
+					word.className="desc";								
+					a.appendChild(word);							
+					//第二段描述
+					let	w2 = result["data"][count]["mrt"];
+					let w3 = result["data"][count]["category"]
+					let div2 = document.createElement("div")
+					div2.className = "desc2";
+					a.appendChild(div2)	;
+					let word2 = createword("div", "desc21", w2);
+					let word3 = createword("div", "desc22", w3);
+					div2.appendChild(word2);
+					div2.appendChild(word3);
+					count += 1;
+				}
+			}
+		}
+		//第三階段,判斷nextpage狀態
+		if (result["nextPage"] === null){
+			clearInterval(auto);
+			interval -= 1
+		}else if (result["nextPage"] === undefined){
+			clearInterval(auto);
+			interval -= 1
+		}else{
+			page = result["nextPage"] ;
+		}
+	});
+}
+
+function singup(){
+	let singup2 = document.getElementById("singup2");
+	singup2.addEventListener("submit", function(e){
+		e.preventDefault();
+	})
+	let rname = document.getElementById("rname").value;
+	let remail = document.getElementById("remail").value;
+	let rpassword = document.getElementById("rpassword").value;
+	if (rname === ""){
+		return
+	}else if (remail === ""){
+		return
+	}else if(rpassword === ""){
+		return
+	}
+	let src = "/api/user";
+	fetch(src,{method:"POST",body:JSON.stringify({"name":rname,"email":remail,"password":rpassword}),headers:{"content-type":"application/json"}}
+	).then(response => response.json()).then(result => {
+		let r = document.getElementById("singupresult");
+		r.innerHTML = "";
+		r.className = "result" ;
+		if (result["ok"]){
+			let word = document.createTextNode("註冊成功!");
+			r.appendChild(word);
+			
+		}else{
+			let word = document.createTextNode(result["message"]);
+			r.appendChild(word);
+			
+		}
+	})
+
+	
+}
+
+
+function singin(){
+	let singin2 = document.getElementById("singin2");
+	singin2.addEventListener("submit", function(e){
+		e.preventDefault();
+	})
+	let semail = document.getElementById("semail").value;
+	let spassword = document.getElementById("spassword").value;
+	if (semail === ""){
+		return
+	}else if (spassword === ""){
+		return
+	}
+	let src = "/api/user" ;
+	fetch(src,{method:"PATCH",body:JSON.stringify({"email":semail,"password":spassword}),headers:{"content-type":"application/json"}}
+	).then(function(response){
+		return response.json()
+	}).then(function(result){
+		let r = document.getElementById("singinresult");
+		r.innerHTML = "";
+		r.className = "result" ;
+		if (result["ok"]){
+			document.location.href = "/";
+		}else{
+			let word = document.createTextNode(result["message"]);
+			r.appendChild(word);
+		}
+	})
+}
+function singout(){
+	let src = "/api/user" ;
+	fetch(src,{method:"DELETE"}
+	).then(function(response){
+		return response.json()
+	}).then(function(result){
+		if (result["ok"]){
+			document.location.href = "/"
+		}else{
+			alert("系統錯誤")
+			document.location.href = "/"
+		}
+	})
+}
+function changesomething(what){
+	
+	if (state !== null){
+		singout();
+	}else{
+		let black = document.getElementById("black");
+		let singin = document.getElementById("singin");
+		let singup = document.getElementById("singup");
+		if (what === true){
+			document.body.style.overflow = "hidden";
+			black.style.display = "block";
+			singin.style.display = "block";
+		}else if (what === 0){
+			singup.style.display = "block";
+			singin.style.display = "none";
+		}else if (what === 1){
+			singup.style.display = "none";
+			singin.style.display = "block";
+		}else{
+			document.body.style.overflow = "auto";
+			black.style.display = "none"
+			singup.style.display = "none";
+			singin.style.display = "none";
+			let singinresult = document.getElementById("singinresult");
+			let singupresult = document.getElementById("singupresult");
+			singupresult.innerHTML = "";
+			singinresult.innerHTML = "";
+		}
+	}
+}
+
+function createword(ele, name, word){
+	if (word === undefined){
+		let a = document.createElement(ele);
+		a.className = name;
+		return a ;
+	}else if (word === "None"){
+		let a =document.createElement(ele)
+		let b = document.createTextNode("無")
+		a.className = name;
+		a.appendChild(b);
+		return a ;
+	}else{
+		let a = document.createElement(ele);
+		let b = document.createTextNode(word);
+		a.className = name;
+		a.appendChild(b);
+		return a ;
+	}
+}
+
+var page = 0;
+var data = 0;
+var keyword
+var interval = 1;
+let state;
+//搜尋圖片
+function key(){
+	page = 0;
+	data = 0;
+	let key = document.querySelector(".key").value;
+	if (key === ""){
+		return;
+	}else{
+		if (interval == 0){
+			auto = setInterval(autopage, 1000)
+			interval = 1;
+		}
+		keyword ="&keyword=" + key;
+		let photot = document.getElementById("photot");
+		photot.innerHTML = "";      
+		get((page + keyword),data);
+	}
+}
+
+</script>
+</head>
+<body>
+
+<div id = "singin">
+	<div class = "color"></div>
+	<button onclick = "changesomething(false);" id = "close"></button>
+	<div class = "singin1">登入會員帳號</div>
+	
+	<form id = "singin2">
+		<input id = "semail" class = "inputspace" type = "email" required placeholder = "輸入電子信箱">
+		<input id = "spassword" class = "inputspace" type = "password" required placeholder = "輸入密碼">
+		<input onclick = "singin();" type = "submit" value = "登入帳戶">
+	</form>
+	<div class = "singin3">沒還有帳戶？
+		<input onclick = "changesomething(0);" type = "button" value = "點此註冊">
+	</div>
+	<div id = "singinresult"></div>
+</div>
+
+<div id = "singup">
+	<div class = "color"></div>
+	<button onclick = "changesomething(false);" id = "close2"></button>
+	<div class = "singup1">註冊會員帳號</div>
+	
+	<form id = "singup2">
+		<input id = "rname" class = "inputspace" type = "text" required placeholder = "輸入姓名">
+		<input id = "remail" class = "inputspace" type = "email" required placeholder = "輸入電子郵件">
+		<input id = "rpassword" class = "inputspace" type = "password" required placeholder = "輸入密碼">
+		<input onclick = "singup();" type = "submit" value = "註冊新帳戶">
+	</form>
+	<div id = "singup3" class = "singup3">已經有帳戶了？
+		<input onclick = "changesomething(1);" type = "button" value = "點此登入">
+	</div>
+	<div id = "singupresult"></div>
+</div>
+
+<div class = "position" id = "position">
+	<div class = "top">
+		<div class = "topleft"><a style = "	color: #448899;" href = "/">台北一日遊</a></div>
+		<div class = "topmiddle">預定行程</div>
+		<button onclick = "changesomething(true);" id = "topright"></button>
+	</div>
+</div>
+
+<div style = "height:54px;"></div>
+
+<div id = "second">
+	<div class = "seconda">
+		<div class = "seconda1">輕鬆享受台北一日悠閒</div>
+		<div class = "seconda2">探索每個角落，體驗程式的深度旅遊行程</div>
+			
+		<form id = "myform" class = "seconda3">
+			<input class = "key" type = "text" required placeholder = "輸入景點名稱查詢">
+			<button type = "submit" onclick = "key();"></button>
+		</form>
+	</div>
+</div>
+
+<div id="photot"></div>
+<div id = black></div>
+<div class = "bottom" id = "bottom">
+	<div class = "bottomword">COPYRIGHT © 2021 台北一日遊</div>
+</div>
+
+</body>
+</html>
