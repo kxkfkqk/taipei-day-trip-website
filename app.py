@@ -11,7 +11,7 @@ app.secret_key = "helloFlaskeefdsfsdfsdfwefwec"
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
-db = pymysql.connect(host = "localhost", user = "root", password = "lqsym233", database = "website")
+db = pymysql.connect(host = "localhost", user = "root", password = "Lqsym233!", database = "website")
 cursor = db.cursor()
 
 # Pages
