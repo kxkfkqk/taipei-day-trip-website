@@ -1,16 +1,17 @@
 from flask import request
 from flask import Flask
+import urllib.request as req
 import json
 import pymysql
 from flask import render_template
 from flask import session
-
+from flask import redirect
 app=Flask(__name__, static_folder = "public", static_url_path = "/")
 app.secret_key = "helloFlaskeefdsfsdfsdfwefwec"
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
-db = pymysql.connect(host = "localhost", user = "root", password = "Lqsym233!", database = "website")
+db = pymysql.connect(host = "localhost", user = "root", password = "lqsym233", database = "website")
 cursor = db.cursor()
 
 # Pages
@@ -19,11 +20,14 @@ def index():
 	return render_template("index.html")
 @app.route("/attraction/<id>")
 def attraction(id):
-	data = id
-	return render_template("attraction.html", name = data)
+	session["data"] = id
+	return render_template("attraction.html", name = session["data"])
 @app.route("/booking")
 def booking():
-	return render_template("booking.html")
+	if "name" in session:
+		return render_template("booking.html", name = session["name"])
+	else:
+		return redirect("/")
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
@@ -78,7 +82,7 @@ def attractions():
 							"mrt":mrt,
 							"latitude":latitude,
 							"longitude":longitude,
-							"imgages":imgages
+							"images":imgages
 						}]
 					alldata += data
 			return json.dumps({
@@ -179,7 +183,7 @@ def attractions2 (number):
 					"mrt":mrt,
 					"latitude":latitude,
 					"longitude":longitude,
-					"imgages":x
+					"images":x
 				}]
 		return json.dumps({
 					"data":data
@@ -267,9 +271,9 @@ def apiuserget():
 @app.route("/api/user", methods = ["DELETE"])
 def apiuserdelete():
 	try:
-		session.pop("name", None)
-		session.pop("email", None)
-		session.pop("id", None)
+		session.pop("id")
+		session.pop("name")
+		session.pop("email")
 		return json.dumps({
 			"ok":True
 		})
@@ -277,4 +281,78 @@ def apiuserdelete():
 		return json.dumps({
 			"ok":False
 		})
+@app.route("/api/booking", methods =["GET"])
+def apibookingget():
+	try:
+		if "email" in session:
+			if request.args.get("number") == None:
+				if "image" in session:
+					return json.dumps({
+						"data":{
+							"attraction":{
+								"id":session["number"],
+								"name":session["titlename"],
+								"address":session["address"],
+								"image":session["image"]
+							},
+							"date":session["date"],
+							"time":session["time"],
+							"price":session["price"]
+						}
+					},ensure_ascii = False)
+				else:
+					return json.dumps({
+						"error":True,
+						"message":False
+					})
+			else:
+				session["registerid"] = session["data"]
+				session["number"] = request.args.get("number")
+				session["date"] = request.args.get("date")
+				session["time"] = request.args.get("time")
+				session["price"] = request.args.get("price")
+				session["titlename"] = request.args.get("name")
+				session["address"] = request.args.get("address")
+				session["image"] = request.args.get("image")
+				return json.dumps({
+					"data":{
+						"attraction ":{
+							"id":session["number"],
+							"name":session["titlename"],
+							"address":session["address"],
+							"image":session["image"]
+						},
+						"date":session["date"],
+						"time":session["time"],
+						"price":session["price"]
+					}
+				},ensure_ascii = False)
+		else:
+			return json.dumps({
+				"error":True,
+				"message":False
+			})
+	except:
+		return json.dumps({
+			"error":True,
+			"message":False
+		})
+@app.route("/api/booking", methods = ["POST"])
+def apibookingpost():
+	session["sureid"] = session["registerid"]
+	session["suredate"] = session["date"]
+	session["suretime"] = session["time"]
+	session["sureprice"] = session["price"]
+	return redirect("/booking")
+@app.route("/api/booking", methods = ["DELETE"])
+def apibookingdelete():
+	session.pop("number")
+	session.pop("date")
+	session.pop("time")
+	session.pop("price")
+	session.pop("titlename")
+	session.pop("address")
+	session.pop("image")
+	session.pop("registerid")
+	return redirect("/booking")
 app.run(host = "0.0.0.0", port=3000)

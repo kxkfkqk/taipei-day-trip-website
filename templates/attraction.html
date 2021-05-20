@@ -128,7 +128,8 @@ a{
     font-size: 30px;
     line-height: 34px;
 }		
-.topmiddle{      
+#topmiddle{ 
+    margin-right:5px;     
 	text-align: center;      
 	width:90px;
 	height:34px;
@@ -141,7 +142,6 @@ a{
 	height:34px;
 	line-height: 34px; 
     flex: none;
-    cursor: pointer;
 }	
 #biggallery{
     
@@ -195,7 +195,7 @@ a{
     align-items: center;
 	width:600px;height:80px;
 }
-.detailwordrule2{
+#detailwordrule2{
 	margin-right:auto;margin-left:auto;
 	display: flex;flex-wrap: wrap;
 	justify-content: center;
@@ -232,6 +232,7 @@ a{
 	align-items: center;
 	color: #666666;
 }
+
 .detailword4{
 	width: 560px;
 	height: 22px;
@@ -243,6 +244,18 @@ a{
 .detailword5{
     width:560px;
     display:flex;
+}
+.detailword5 input{
+    margin:0;padding:0;
+    border:none;outline:none;
+    width:154px;
+    text-align: center;
+    height:36px;
+    line-height: 36px;
+    background-color:#448899;
+    font-size: 19px;
+    color:#ffffff;
+    border-radius: 5px;
 }
 .detailword5in{
     width:154px;
@@ -290,25 +303,27 @@ a{
     position: relative;bottom:6px;
 }
 .top button{
+    color: #666666;
 	font-size: 16px;
 	margin: 0;
 	padding: 0;
 	border: none;  
 	outline: none;
-	background-color: #ffffff;    
+	background-color: #ffffff;
+    cursor: pointer;    
 }
 
-input[type = checkbox]{
+input[type = radio]{
     width: 20px;
     height: 20px;
-    /*  唯一用有效可替換圖片方式 */
+      /* 唯一用有效可替換圖片方式  */
     -webkit-appearance:none;
-    /*                          */                      
+
     background: url(/nocheck.png)no-repeat center;
     background-size: 100% 100%; 
     outline: none;
     }
-input[type = checkbox]:checked{
+input[type = radio]:checked{
     background: url(/check.png) no-repeat center;
     background-size: 100% 100%; 
     outline: none;
@@ -358,7 +373,7 @@ var arrowpos = 0;
 var count = 0;
 var howmany = 0 ;
 let state;
-
+let p;
 window.addEventListener("load", event => {
     let black = document.querySelector(".black");
     let singin = document.getElementById("singin");
@@ -368,6 +383,29 @@ window.addEventListener("load", event => {
 		document.body.style.overflow = "auto";
 		singin.style.display = "none";
 		singup.style.display = "none";
+    })
+    let signup2 = document.getElementById("detailwordrule2")
+    signup2.addEventListener("submit", e => {
+        e.preventDefault();
+        if (state !== null){
+            let up = document.getElementById("up");
+            let down = document.getElementById("down");
+            let detailword = document.getElementById("detailword");
+            let address = document.getElementById("address")
+            let price;
+            if (up.checked){
+                price = {"time":"早上九點到下午四點","price":"新台幣2000元"}
+            }else{
+                price = {"time":"下午兩點到晚上九點","price":"新台幣2500元"}
+            }
+            let date = document.querySelector("input[type = 'date']");
+            let data = document.getElementById("name");
+            let src = "/api/booking?date=" + date.value +"&time=" + price["time"] + "&price=" + price["price"] + "&number=" + data.textContent + "&image=" + p + "&name=" + detailword.textContent + "&address=" + address.textContent;
+            fetch(src);
+            document.location.href = "/booking";
+        }else{
+            changesomething(true);
+        }
     })
 })
 function checksingin(){
@@ -493,14 +531,15 @@ function changesomething(what){
 	}
 }
 function start(){
+    moneyup();
     checksingin();
     let data = document.getElementById("name");
     let src = "/api/attraction/" + data.textContent;
     fetch(src).then(function(response){										
 		return response.json();												
 	}).then(function(result){
-        var x = result["data"][0]["imgages"];
-        let p = x[count];
+        var x = result["data"][0]["images"];
+        p = x[count];
         //計算圖片張數
         howmany = countpattern(count, x);             
         var circle = document.getElementById("circle");
@@ -579,9 +618,6 @@ function moneyup(){
     if (down.checked){
         down.checked = false;
     }
-    if (up.checked === false){
-        money.innerHTML = "" ;
-    }
 }
 //計算下半天價錢
 function moneydown(){
@@ -592,9 +628,6 @@ function moneydown(){
     money.appendChild(node) ;
     if (up.checked){
         up.checked = false;
-    }
-    if (down.checked === false){
-        money.innerHTML = "" ;
     }
 }
 //計算圖片數量
@@ -615,7 +648,7 @@ function changepattern(who){
     fetch(src).then(function(response){										
 		return response.json();												
 	}).then(function(result){
-        var x = result["data"][0]["imgages"];
+        var x = result["data"][0]["images"];
         var pattern = document.getElementById("biggallery") ;
         if(who == 1){
             arrowpos += 1;
@@ -639,6 +672,13 @@ function changepattern(who){
         circle.innerHTML = "" ;
         createcircle(circle);
     })
+}
+function register(){
+    if (state !== null){
+        document.location.href = "/booking";
+    }else{
+        changesomething(true);
+    }
 }
 </script>
 </head>
@@ -681,7 +721,7 @@ function changepattern(who){
     <div class = "position" id = "position">
         <div class = "top">
             <div class = "topleft"><a href = "/" style = "color: #448899;">台北一日遊</a></div>
-            <div class = "topmiddle">預定行程</div>
+            <button onclick = "register();" id = "topmiddle">預定行程</button>
             <button onclick = "changesomething(true);" id = "topright"></button>
         </div>
     </div>
@@ -699,20 +739,22 @@ function changepattern(who){
                 <div id = "detailword2"></div>
             </div>
 
-            <div class = "detailwordrule2">
+            <form id = "detailwordrule2">
                 <div class = detailword3>訂購導覽行程</div>
                 <div class = detailword4>以此景點為中心的一日行程，帶您探索城市角落故事</div>
-                <div class = detailword3>選擇日期:<input type = "date" class = "date"></div>
-                <div class = detailword8>選擇時間:
-                    <span style = "position: relative;left:10px;"><input onclick = "moneyup();" type = "checkbox" id = "up"><a class = "time">上半天</a><input onclick = "moneydown();" type = "checkbox" id ="down"><a class = "time">下半天</a></span>
-                </div>
-                <div class = detailword3>導覽費用:
-                    <span id = "money" style = "position: relative;left:10px;font-weight: normal;"></span>
-                </div>
-                <div class = "detailword5">
-                    <div class = "detailword5in">開始預訂行程</div>
-                </div>
-            </div>
+
+                    <div class = detailword3>選擇日期:<input required type = "date" class = "date"></div>
+                    <div class = detailword8>選擇時間:
+                        <span style = "position: relative;left:10px;"><input checked onclick = "moneyup();" type = "radio" id = "up"><a class = "time">上半天</a><input onclick = "moneydown();" type = "radio" id ="down"><a class = "time">下半天</a></span>
+                    </div>
+                    <div class = detailword3>導覽費用:
+                        <span id = "money" style = "position: relative;left:10px;font-weight: normal;"></span>
+                    </div>
+                    <div class = "detailword5">
+                        <input id = "register" type = "submit" value = "開始預訂行程">
+                    </div>
+               
+            </form>
         </div>
     </div>
     <hr style = "position: relative;top:100px">
