@@ -26,23 +26,26 @@ a{
 
 }
 #singup{
+	margin-left: -171px;
 	z-index: 999;
 	display: none;
 	padding:15px;
-	position: fixed;top:80px;left:790px;
+	position: fixed;top:80px;left:50%;
 	width:310px;height:302px;
 	background:#ffffff;
 }
 #singin{
+	margin-left: -171px;
 	z-index: 999;
 	display: none;
 	padding:15px;
-	position: fixed;top:80px;left:790px;
+	position: fixed;top:80px;left:50%;
 	width:310px;height:245px;
 	background:#ffffff;
 }
 .color{
-	position: fixed;top:70px;left:790px;
+	margin-left: -171px;
+	position: fixed;top:70px;left:50%;
 	background:linear-gradient(135deg, #AADDEE 0%, #66AABB 100%) ;
 	height:10px;width:340px;
 }
@@ -196,8 +199,9 @@ input::-webkit-input-placeholder {
 	margin: 0;
 	padding: 0;
 	border: none;  
-	outline: none;
+	outline: none;cursor: pointer;
 	background-color: #ffffff;    
+	color:#666666;
 }
 .topleft{
 	flex:auto;
@@ -209,7 +213,8 @@ input::-webkit-input-placeholder {
     line-height: 34px;
 	color: #448899;
 }		
-.topmiddle{
+#topmiddle{
+	margin-right:5px;
 	text-align: center;      
 	width:90px;
 	height:34px;
@@ -221,7 +226,7 @@ input::-webkit-input-placeholder {
 	width:90px;
 	height:34px;
 	line-height: 34px; 
-    flex: none;cursor: pointer;
+    flex: none;
 }	
 #photot{		/*  照片容器 */
 	width:1200px;
@@ -310,16 +315,10 @@ input::-webkit-input-placeholder {
 	.seconda{
 		width:90%;
 	}
-	#singin, #singup, .color{
-		left:200px;
-	}
 }				
 @media screen and (max-width:600px){			
 	.second{
 		width:100%;
-	}
-	#singin, #singup, .color{
-		left:10px;
 	}
 }  
 </style>
@@ -402,7 +401,7 @@ function get(page,data){
 					a.className = "gallery";
 					a.href = "/attraction/" + number;
 					//圖片
-					let p = result["data"][count]["imgages"][0];
+					let p = result["data"][count]["images"][0];
 					let pattern = document.createElement("img");				        
 					pattern.src = "http" + p.split("http")[1];
 					a.appendChild(pattern);
@@ -592,7 +591,13 @@ function key(){
 		get((page + keyword),data);
 	}
 }
-
+function register(){
+    if (state !== null){
+        document.location.href = "/booking";
+    }else{
+        changesomething(true);
+    }
+}
 </script>
 </head>
 <body>
@@ -633,7 +638,7 @@ function key(){
 <div class = "position" id = "position">
 	<div class = "top">
 		<div class = "topleft"><a style = "	color: #448899;" href = "/">台北一日遊</a></div>
-		<div class = "topmiddle">預定行程</div>
+		<button onclick = "register();" id = "topmiddle">預定行程</button>
 		<button onclick = "changesomething(true);" id = "topright"></button>
 	</div>
 </div>

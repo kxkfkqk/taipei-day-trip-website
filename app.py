@@ -1,10 +1,11 @@
 from flask import request
 from flask import Flask
+import urllib.request as req
 import json
 import pymysql
 from flask import render_template
 from flask import session
-
+from flask import redirect
 app=Flask(__name__, static_folder = "public", static_url_path = "/")
 app.secret_key = "helloFlaskeefdsfsdfsdfwefwec"
 app.config["JSON_AS_ASCII"]=False
@@ -19,11 +20,14 @@ def index():
 	return render_template("index.html")
 @app.route("/attraction/<id>")
 def attraction(id):
-	data = id
-	return render_template("attraction.html", name = data)
+	session["data"] = id
+	return render_template("attraction.html", name = session["data"])
 @app.route("/booking")
 def booking():
-	return render_template("booking.html")
+	if "name" in session:
+		return render_template("booking.html", name = session["name"])
+	else:
+		return redirect("/")
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
@@ -78,7 +82,7 @@ def attractions():
 							"mrt":mrt,
 							"latitude":latitude,
 							"longitude":longitude,
-							"imgages":imgages
+							"images":imgages
 						}]
 					alldata += data
 			return json.dumps({
@@ -169,7 +173,7 @@ def attractions2 (number):
 			mrt = i[6]
 			latitude = i[7]
 			longitude = i[8]
-			data  = [{
+			data  = {
 					"id":ide,
 					"name":name,
 					"category":category,
@@ -179,8 +183,8 @@ def attractions2 (number):
 					"mrt":mrt,
 					"latitude":latitude,
 					"longitude":longitude,
-					"imgages":x
-				}]
+					"images":x
+				}
 		return json.dumps({
 					"data":data
 				},ensure_ascii = False)
@@ -267,14 +271,88 @@ def apiuserget():
 @app.route("/api/user", methods = ["DELETE"])
 def apiuserdelete():
 	try:
-		session.pop("name", None)
-		session.pop("email", None)
-		session.pop("id", None)
+		session.pop("id")
+		session.pop("name")
+		session.pop("email")
 		return json.dumps({
 			"ok":True
 		})
 	except:
 		return json.dumps({
 			"ok":False
+		})
+@app.route("/api/booking", methods =["GET"])
+def apibookingget():
+	try:
+		if "email" in session:
+			if "attractionId" in session:
+				url = "http://127.0.0.1:3000/api/attraction/" + session["attractionId"]
+				with req.urlopen(url) as response:
+					data = json.load(response)
+				session["registername"] = data["data"]["name"]
+				session["address"] = data["data"]["address"]
+				session["image"] = data["data"]["images"][0]
+				return json.dumps({
+					"data":{
+						"attraction":{
+							"id":session["attractionId"],
+							"name":session["registername"],
+							"address":session["address"],
+							"image":session["image"]
+						},
+						"date":session["date"],
+						"time":session["time"],
+						"price":session["price"]
+					}
+				},ensure_ascii = False)
+			else:
+				return json.dumps({
+					"data":None,
+					"message":"目前沒有任何待預定的行程"
+				},ensure_ascii = False)
+		else:
+			return json.dumps({
+				"error":True,
+				"message":"Nothing"
+			})
+	except:
+		return json.dumps({
+				"error":True,
+				"message":"未取得資料"
+			})
+	
+@app.route("/api/booking", methods = ["POST"])
+def apibookingpost():
+	try:
+		data = request.get_json()
+		session["attractionId"] = data["attractionId"]
+		session["date"] = data["date"]
+		session["time"] = data["time"]
+		session["price"] = data["price"]
+		return json.dumps({
+			"ok":True
+		})
+	except:
+		return json.dumps({
+			"error":True,
+			"message":"系統錯誤"
+		})
+@app.route("/api/booking", methods = ["DELETE"])
+def apibookingdelete():
+	try:
+		session.pop("date")
+		session.pop("time")
+		session.pop("price")
+		session.pop("registername")
+		session.pop("address")
+		session.pop("image")
+		session.pop("attractionId")
+		return json.dumps({
+			"ok":True
+		})
+	except:
+		return json.dumps({
+			"error":True,
+			"message":"系統出錯"
 		})
 app.run(host = "0.0.0.0", port=3000)
