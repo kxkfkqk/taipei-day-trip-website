@@ -173,7 +173,7 @@ def attractions2 (number):
 			mrt = i[6]
 			latitude = i[7]
 			longitude = i[8]
-			data  = [{
+			data  = {
 					"id":ide,
 					"name":name,
 					"category":category,
@@ -184,7 +184,7 @@ def attractions2 (number):
 					"latitude":latitude,
 					"longitude":longitude,
 					"images":x
-				}]
+				}
 		return json.dumps({
 					"data":data
 				},ensure_ascii = False)
@@ -285,40 +285,18 @@ def apiuserdelete():
 def apibookingget():
 	try:
 		if "email" in session:
-			if request.args.get("number") == None:
-				if "image" in session:
-					return json.dumps({
-						"data":{
-							"attraction":{
-								"id":session["number"],
-								"name":session["titlename"],
-								"address":session["address"],
-								"image":session["image"]
-							},
-							"date":session["date"],
-							"time":session["time"],
-							"price":session["price"]
-						}
-					},ensure_ascii = False)
-				else:
-					return json.dumps({
-						"error":True,
-						"message":False
-					})
-			else:
-				session["registerid"] = session["data"]
-				session["number"] = request.args.get("number")
-				session["date"] = request.args.get("date")
-				session["time"] = request.args.get("time")
-				session["price"] = request.args.get("price")
-				session["titlename"] = request.args.get("name")
-				session["address"] = request.args.get("address")
-				session["image"] = request.args.get("image")
+			if "attractionId" in session:
+				url = "http://127.0.0.1:3000/api/attraction/" + session["attractionId"]
+				with req.urlopen(url) as response:
+					data = json.load(response)
+				session["registername"] = data["data"]["name"]
+				session["address"] = data["data"]["address"]
+				session["image"] = data["data"]["images"][0]
 				return json.dumps({
 					"data":{
-						"attraction ":{
-							"id":session["number"],
-							"name":session["titlename"],
+						"attraction":{
+							"id":session["attractionId"],
+							"name":session["registername"],
 							"address":session["address"],
 							"image":session["image"]
 						},
@@ -327,32 +305,54 @@ def apibookingget():
 						"price":session["price"]
 					}
 				},ensure_ascii = False)
+			else:
+				return json.dumps({
+					"data":None,
+					"message":"目前沒有任何待預定的行程"
+				},ensure_ascii = False)
 		else:
 			return json.dumps({
 				"error":True,
-				"message":False
+				"message":"Nothing"
 			})
 	except:
 		return json.dumps({
-			"error":True,
-			"message":False
-		})
+				"error":True,
+				"message":"未取得資料"
+			})
+	
 @app.route("/api/booking", methods = ["POST"])
 def apibookingpost():
-	session["sureid"] = session["registerid"]
-	session["suredate"] = session["date"]
-	session["suretime"] = session["time"]
-	session["sureprice"] = session["price"]
-	return redirect("/booking")
+	try:
+		data = request.get_json()
+		session["attractionId"] = data["attractionId"]
+		session["date"] = data["date"]
+		session["time"] = data["time"]
+		session["price"] = data["price"]
+		return json.dumps({
+			"ok":True
+		})
+	except:
+		return json.dumps({
+			"error":True,
+			"message":"系統錯誤"
+		})
 @app.route("/api/booking", methods = ["DELETE"])
 def apibookingdelete():
-	session.pop("number")
-	session.pop("date")
-	session.pop("time")
-	session.pop("price")
-	session.pop("titlename")
-	session.pop("address")
-	session.pop("image")
-	session.pop("registerid")
-	return redirect("/booking")
+	try:
+		session.pop("date")
+		session.pop("time")
+		session.pop("price")
+		session.pop("registername")
+		session.pop("address")
+		session.pop("image")
+		session.pop("attractionId")
+		return json.dumps({
+			"ok":True
+		})
+	except:
+		return json.dumps({
+			"error":True,
+			"message":"系統出錯"
+		})
 app.run(host = "0.0.0.0", port=3000)

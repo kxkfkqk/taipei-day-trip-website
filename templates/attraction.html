@@ -389,20 +389,29 @@ window.addEventListener("load", event => {
         e.preventDefault();
         if (state !== null){
             let up = document.getElementById("up");
+            let number = document.getElementById("name");
             let down = document.getElementById("down");
             let detailword = document.getElementById("detailword");
             let address = document.getElementById("address")
             let price;
             if (up.checked){
-                price = {"time":"早上九點到下午四點","price":"新台幣2000元"}
+                price = {"time":"morning","price":"2000"}
             }else{
-                price = {"time":"下午兩點到晚上九點","price":"新台幣2500元"}
+                price = {"time":"afternoon","price":"2500"}
             }
             let date = document.querySelector("input[type = 'date']");
             let data = document.getElementById("name");
-            let src = "/api/booking?date=" + date.value +"&time=" + price["time"] + "&price=" + price["price"] + "&number=" + data.textContent + "&image=" + p + "&name=" + detailword.textContent + "&address=" + address.textContent;
-            fetch(src);
-            document.location.href = "/booking";
+            let src = "/api/booking"
+            fetch(src,{method:"POST",body:JSON.stringify({"attractionId":number.textContent,"date":date.value,"time":price["time"],"price":price["price"]}),headers:{"content-type":"application/json"}}
+            ).then(response => response.json()
+            ).then(result => {
+                if (result["ok"]){
+                    document.location.href = "/booking";
+                }else{
+                    alert(result["message"]);
+                }
+            })
+            
         }else{
             changesomething(true);
         }
@@ -538,7 +547,7 @@ function start(){
     fetch(src).then(function(response){										
 		return response.json();												
 	}).then(function(result){
-        var x = result["data"][0]["images"];
+        var x = result["data"]["images"];
         p = x[count];
         //計算圖片張數
         howmany = countpattern(count, x);             
@@ -562,31 +571,31 @@ function start(){
 
         
         //文字敘述部分
-        let w = result["data"][0]["name"] ;
+        let w = result["data"]["name"] ;
         let word = document.createTextNode(w) ;
         let where = document.getElementById("detailword") ;
         where.appendChild(word)
 
-        let w1 = result["data"][0]["category"] + " at " + result["data"][0]["mrt"] ;
+        let w1 = result["data"]["category"] + " at " + result["data"]["mrt"] ;
         let word2 = document.createTextNode(w1) ;
         let where2 = document.getElementById("detailword2") ;
         where2.appendChild(word2);
 
-        let des = result["data"][0]["description"];
+        let des = result["data"]["description"];
         let descripition = document.createTextNode(des);
         let where3 = document.getElementById("description");
         where3.appendChild(descripition);
 
-        let add = result["data"][0]["address"] ;
+        let add = result["data"]["address"] ;
         let address = document.createTextNode(add) ;
         let where4 = document.getElementById("address") ;
         where4.appendChild(address) ;
-        if (result["data"][0]["transport"] === "None"){
+        if (result["data"]["transport"] === "None"){
             let no = document.createTextNode("無");
             let where5 = document.getElementById("transport");
             where5.appendChild(no);
         }else{
-            let tran = result["data"][0]["transport"];
+            let tran = result["data"]["transport"];
             let transport = document.createTextNode(tran);
             let where5 = document.getElementById("transport") ;
             where5.appendChild(transport) ;

@@ -235,7 +235,8 @@ a{
 	width:1000px;
 	display: flex;justify-content: flex-end;
 }
-.specialbutton input{
+#form .specialbutton input{
+	height:36px;
 	margin:0;padding:0;
 	border:none;outline:none;
 	width:173px;
@@ -272,7 +273,7 @@ a{
 		width:40%;
 	}
 }   					
-@media screen and (max-width:725px){
+@media screen and (max-width:800px){
 	#form{
 		width:90%;
 	}
@@ -311,8 +312,8 @@ window.addEventListener("load", event => {
 function data(){
 	fetch("/api/booking"
 	).then(response => response.json()
-	).then(result => {
-		if (result["error"]){
+	).then( result => {
+		if (result["data"] === null){
 			let pattern = document.getElementById("pattern");
 			let register = document.getElementById("register");
 			let form = document.getElementById("form");
@@ -320,13 +321,20 @@ function data(){
 			pattern.style.backgroundImage = "None";
 			form.innerHTML = "";
 			informationrule.innerHTML = "";
-			let node = document.createTextNode("目前沒有任何待預定的行程")
+			let node = document.createTextNode(result["message"])
 			register.appendChild(node);
 			let bottom = document.getElementById("bottom")
 			bottom.style.position = "absolute";
 			bottom.style.top = "200px";
 			bottom.style.height = "500px";
 		}else{
+			let coin = "新台幣" + result["data"]["price"] + "元";
+			let chinesetime;
+			if (result["data"]["time"] === "morning"){
+				chinesetime = "早上九點到下午四點"
+			}else{
+				chinesetime = "下午兩點到晚上九點"
+			}
 			let url = result["data"]["attraction"]["image"];
 			let patternurl = "url(" + url + ")";
 			let pattern = document.getElementById("pattern");
@@ -341,9 +349,9 @@ function data(){
 			let titlenode = document.createTextNode(result["data"]["attraction"]["name"])
 			let datenode = document.createTextNode(result["data"]["date"]);
 			let locationnode = document.createTextNode(result["data"]["attraction"]["address"]);
-			let timenode = document.createTextNode(result["data"]["time"]);
-			let moneynode = document.createTextNode(result["data"]["price"]);
-			let moneynode2 = document.createTextNode(result["data"]["price"]);
+			let timenode = document.createTextNode(chinesetime);
+			let moneynode = document.createTextNode(coin);
+			let moneynode2 = document.createTextNode(coin);
 			title.appendChild(titlenode);
 			date.appendChild(datenode);
 			time.appendChild(timenode);
@@ -351,7 +359,6 @@ function data(){
 			money.appendChild(moneynode2);
 			location.appendChild(locationnode);
 		}
-		
 	})
 }
 function checksingin(){
@@ -401,8 +408,17 @@ function changesomething(what){
 	}
 }
 function del(){
-	fetch("/api/booking",{method:"DELETE"})
-	document.location.href = "/booking" ;
+	fetch("/api/booking",{method:"DELETE"}
+	).then(response => response.json()
+	).then(result => {
+		if (result["ok"]){
+			document.location.href = "/booking" ;
+		}else{
+			alert(result["message"])
+			document.location.href = "/booking" ;
+		}
+	})
+	
 }
 function singout(){
 	let src = "/api/user" ;
