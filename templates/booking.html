@@ -6,105 +6,15 @@
 <title>台北一日遊-預定行程</title>
 <style type="text/css">
 
-.black{
-    display: none;
-	position: fixed;
-	top: 0%;
-	left: 0%;
-	width: 100%;
-	height: 100vmax;
-	background-color: black; 
-	z-index: 900;
-	-moz-opacity: 80;
-	opacity: .50;
-	filter: alpha(opacity=50);
-}
+
 body{
     margin:0;
 }
 a{
 	text-decoration:none;
 }
-#singup{
-    z-index: 999;
-	display: none;
-	padding:15px;
-	position: fixed;top:80px;margin-left: -171px;left:50%;
-	width:310px;height:302px;
-	background:#ffffff;
-}
-#singin{
-    z-index: 999;
-	display: none;
-	padding:15px;
-	position: fixed;top:80px;margin-left: -171px;left:50%;
-	width:310px;height:245px;
-	background:#ffffff;
-}
-.color{
-	position: fixed;top:70px;margin-left: -171px;left:50%;
-	background:linear-gradient(135deg, #AADDEE 0%, #66AABB 100%) ;
-	height:10px;width:340px;
-}
-#singin button, #singup button{
-	position:absolute;top:20px;left:310px;
-	width:16px;height:16px;
-	margin:0;padding:0;
-	outline:none;border:none;
-	background:url(/close.png)no-repeat;
-	background-size: 16px 16px;
-	
-}
-.singin1, .singup1{
-	text-align: center;
-	font-size: 24px;
-	font-weight: bold;
-	width:310px;
-}
-#singin2{
-	height:166px;
-	font-size: 24px;
-	font-weight: bold;
-	width:310px;
-}
-#singup2{
-	height:218px;
-	font-size: 24px;
-	font-weight: bold;
-	width:310px;
-}
-.inputspace{
-	margin-top: 5px;
-	margin-bottom: 5px;
-	border: 1px solid #CCCCCC;
-	box-sizing: border-box;
-	border-radius: 5px;
-	height:47px;
-	width:310px;
-	color: #666666;
-}
-#singin2 input[type = "submit"], #singup2 input[type = "submit"]{
-	color:#ffffff;
-	font-size:19px;
-	outline:none;
-	border:none;
-	border-radius: 5px;
-	width:310px;margin-top: 5px;
-	height:47px;
-	background-color: #448899;
-}
-.singin3, .singup3{
-	margin-top: 10px;
-	height:22px;
-	text-align: center;
-}
-.singin3 input[type = "button"], .singup3 input[type = "button"]{
-	margin:0;border:none;
-	outline:none;padding:0;
-	font-size: 16px;
-	background:#ffffff;
-	cursor: pointer;
-}
+
+
 .position{
 	position:fixed; top:0;z-index: 888;
 	width:100%;
@@ -128,6 +38,12 @@ a{
     font-weight: bold;
     font-size: 30px;
     line-height: 34px;
+}
+.topleft a{
+    color: #448899;
+}
+.topleft a:hover{
+	color:#00E3E3;
 }		
 #topmiddle{   
 	margin-right: 5px;   
@@ -154,6 +70,10 @@ a{
 	cursor: pointer;
 	color: #666666;
 }
+.top button:hover{
+	font-size: 20px;
+	color:#000000;
+}
 #username{
     width:100%;
     font-size: 19px;
@@ -174,6 +94,7 @@ a{
 #pattern{
 	width:266px;
 	height:200px;
+	transition: background 1s;
 }
 #informationrule{
 	display: flex;flex-wrap: wrap;
@@ -226,6 +147,17 @@ a{
 	color: #666666;width:1000px;
 	padding-top: 15px;padding-bottom: 15px;
 }
+.informationdata3{
+	color: #666666;width:1000px;
+	margin-top: 15px;
+}
+.informationdata2{
+	height: 30px;position: relative;top:-25px;left:90px;
+	width:180px;
+	border-radius:5px;border: 3px solid #E8E8E8; 
+	
+}
+
 .totalmoney{
 	font-weight: bold;width: 1000px;margin-top:40px;margin-bottom:25px;
 	display: flex;justify-content: flex-end;
@@ -270,32 +202,63 @@ a{
 		width:90%;
 	}
 	#informationrule{
-		width:40%;
-	}
-}   					
-@media screen and (max-width:800px){
-	#form{
-		width:90%;
+		width:40%;position:relative;left:20px;
 	}
 	.top{
 		width:100%;
 	}
-	#informationrule{
-		width:80%;
-		margin-right: auto;margin-left: auto;
+	#form{
+		width:90%;
+	}
+}   					
+@media screen and (max-width:800px){
+	.top{
+		width:100%;
+	}
+	#informationrule {
+		left:0px;top:20px;
+		width:90%;justify-content: start;
+	}
+	#username{
+		width:90%;
+		text-align: start;
 	}
 	#pattern{
 		margin-right: auto;margin-left: auto;
 		width:340px;
 		height:256px;
+		object-fit: cover;
 	}
 	#informationrule button{
-		position: relative;left:40%;top:170px;
+		position: relative;left:28%;top:170px;
 	}
 }
 </style>
+
+
 <script>
+let patterns = {
+	data:null
+}
+let count ;
 let state;
+let coinrequest;
+let idrequest;
+let titlenode;
+let locationnode;
+let url;
+let datenode;
+let istime;
+let auto = setInterval(autochange,2000) ;
+function autochange(){
+	count += 1 ;
+	if ((patterns.data)[count] === undefined){
+		count = 0;
+	}
+	let pattern = document.getElementById("pattern") ;
+	pattern.style.background = "url(" + (patterns.data)[count] + ")" ;
+	pattern.style.backgroundSize = "cover";
+}
 window.addEventListener("load", event => {
     let black = document.querySelector(".black");
     let singin = document.getElementById("singin");
@@ -328,14 +291,18 @@ function data(){
 			bottom.style.top = "200px";
 			bottom.style.height = "500px";
 		}else{
-			let coin = "新台幣" + result["data"]["price"] + "元";
+			idrequest = result["data"]["attraction"]["id"];
+			coinrequest =result["data"]["price"];
+			istime = result["data"]["time"];
+			let coin =  "新台幣" + coinrequest + "元";
 			let chinesetime;
 			if (result["data"]["time"] === "morning"){
 				chinesetime = "早上九點到下午四點"
 			}else{
 				chinesetime = "下午兩點到晚上九點"
 			}
-			let url = result["data"]["attraction"]["image"];
+			patterns.data = result["data"]["attraction"]["image"] ;
+			url = result["data"]["attraction"]["image"][0];
 			let patternurl = "url(" + url + ")";
 			let pattern = document.getElementById("pattern");
 			pattern.style.backgroundImage = patternurl;
@@ -346,9 +313,9 @@ function data(){
 			let time = document.getElementById("time");
 			let money = document.getElementById("money");
 			let location = document.getElementById("location");
-			let titlenode = document.createTextNode(result["data"]["attraction"]["name"])
-			let datenode = document.createTextNode(result["data"]["date"]);
-			let locationnode = document.createTextNode(result["data"]["attraction"]["address"]);
+			titlenode = document.createTextNode(result["data"]["attraction"]["name"])
+			datenode = document.createTextNode(result["data"]["date"]);
+			locationnode = document.createTextNode(result["data"]["attraction"]["address"]);
 			let timenode = document.createTextNode(chinesetime);
 			let moneynode = document.createTextNode(coin);
 			let moneynode2 = document.createTextNode(coin);
@@ -378,35 +345,7 @@ function checksingin(){
         }
     })
 }
-function changesomething(what){
-	if (state !== null){
-		singout();
-	}else{
-        let black = document.querySelector(".black");
-		let singin = document.getElementById("singin");
-		let singup = document.getElementById("singup");
-		if (what === true){
-            black.style.display = "block";
-            document.body.style.overflow = "hidden";
-			singin.style.display = "block";
-		}else if (what === 0){
-			singup.style.display = "block";
-			singin.style.display = "none";
-		}else if (what === 1){
-			singup.style.display = "none";
-			singin.style.display = "block";
-		}else{
-            black.style.display = "none";
-            document.body.style.overflow = "auto";
-			singup.style.display = "none";
-			singin.style.display = "none";
-            let singinresult = document.getElementById("singinresult");
-			let singupresult = document.getElementById("singupresult");
-			singupresult.innerHTML = "";
-			singinresult.innerHTML = "";
-		}
-	}
-}
+
 function del(){
 	fetch("/api/booking",{method:"DELETE"}
 	).then(response => response.json()
@@ -440,44 +379,13 @@ function register(){
 </script>
 </head>
 <body>
-    <div id = "singin">
-        <div class = "color"></div>
-        <button onclick = "changesomething(false);" id = "close"></button>
-        <div class = "singin1">登入會員帳號</div>
-        
-        <form id = "singin2">
-            <input id = "semail" class = "inputspace" type = "email" required placeholder = "輸入電子信箱">
-            <input id = "spassword" class = "inputspace" type = "password" required placeholder = "輸入密碼">
-            <input onclick = "singin();" type = "submit" value = "登入帳戶">
-        </form>
-        <div class = "singin3">沒還有帳戶？？<input onclick = "changesomething(0);" type = "button" value = "點此註冊">
-        
-        </div>
-        <div id = "singinresult"></div>
-    </div>
-    
-    <div id = "singup">
-        <div class = "color"></div>
-        <button onclick = "changesomething(false);" id = "close2"></button>
-        <div class = "singup1">註冊會員帳號</div>
-        
-        <form id = "singup2">
-            <input id = "rname" class = "inputspace" type = "text" required placeholder = "輸入姓名">
-            <input id = "remail" class = "inputspace" type = "email" required placeholder = "輸入電子郵件">
-            <input id = "rpassword" class = "inputspace" type = "password" required placeholder = "輸入密碼">
-            <input onclick = "singup();" type = "submit" value = "註冊新帳戶">
-        </form>
-        <div id = "singup3" class = "singup3">已經有帳戶了？
-            <input onclick = "changesomething(1);" type = "button" value = "點此登入">
-        </div>
-        <div id = "singupresult"></div>
-    </div>
+
 
     <div class = "position" id = "position">
         <div class = "top">
-            <div class = "topleft"><a href = "/" style = "color: #448899;">台北一日遊</a></div>
+            <div class = "topleft"><a href = "/">台北一日遊</a></div>
             <button onclick = "register();" id = "topmiddle">預定行程</button>
-            <button onclick = "changesomething(true);" id = "topright"></button>
+            <button onclick = "singout();" id = "topright">登出系統</button>
         </div>
     </div>
     <div id="photot">   
@@ -498,21 +406,124 @@ function register(){
 	<form id = "form">
 		<hr class = "line"/>
 		<div class = "informationtitle">您的聯絡資訊</div>
-		<div class = "informationdata">聯絡姓名：<input required type = "text"></div>
-		<div class = "informationdata">聯絡信箱：<input required type = "email"></div>
-		<div class = "informationdata">手機號碼：<input required type = "text"></div>
+		<div class = "informationdata">聯絡姓名：<input id = "name" required type = "text"></div>
+		<div class = "informationdata">聯絡信箱：<input id = "email" required type = "email"></div>
+		<div class = "informationdata">手機號碼：<input id = "cellphone" required type = "text"></div>
 		<div style = "font-weight: bold;padding-top:15px;padding-bottom:15px;width:1000px;">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
 		<hr class = "line"/>
 		<div class = "informationtitle">信用卡付款資訊</div>
-		<div class = "informationdata">卡片號碼：<input required type = "text" placeholder = "**** **** **** ****"></div>
-		<div class = "informationdata">過期時間：<input required type = "text" placeholder = "MM/YY"></div>
-		<div class = "informationdata">驗證密碼：<input required type = "text" placeholder = "CW"></div>
+		
+			<div class = "informationdata3"><a >卡片號碼：</a><div class = "informationdata2" id = "card-number"></div></div>
+			<div class = "informationdata3"><a>過期時間：</a><div class = "informationdata2" id = "card-expiration-date"></div></div>
+			<div class = "informationdata3"><a>驗證密碼：</a><div  class = "informationdata2" id = "card-ccv"></div></div>
+		
 		<hr class = "line"/>
 		<div class = "totalmoney">總價:<span id = "totalmoney"></span></div>
 		<div class = "specialbutton"><input type = "submit" value = "確認訂購並付款"></div>
 	</form>
 
 	<div class = "black"></div>
-    <div id = "bottom">COPYRIGHT © 2021 台北一日遊</div>
+	<div id = "bottom">COPYRIGHT © 2021 台北一日遊</div>
+<script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
+<script>
+
+TPDirect.setupSDK(20418, 'app_cm1ARSKDneMe7sYCMTajZeA6xEmqRjVrmK0UsAKJuNIx0nKC8KLG3L7N5uuD', 'sandbox')
+TPDirect.card.setup({
+	fields:{
+		number: {
+			element: '#card-number',
+			placeholder: '**** **** **** ****',
+			outline:'solid'
+		},
+		expirationDate: {
+
+			element: document.getElementById('card-expiration-date'),
+			placeholder: 'MM / YY'
+		},
+		ccv: {
+			element: '#card-ccv',
+			placeholder: 'ccv'
+		}
+	},
+	styles: {
+
+		'input.ccv': {
+			'font-size': '16px'
+		},
+		'input.expiration-date': {
+			 'font-size': '16px'
+		},
+		'input.card-number': {
+				'font-size': '16px'
+		},
+		'.valid': {
+			'color': 'green'
+		},
+
+		'@media screen and (max-width: 2000px)': {
+			'input': {
+				'color': 'red'
+			}
+		}
+	}
+})
+
+
+let form = document.getElementById("form");
+form.addEventListener("submit", event =>{
+	event.preventDefault();
+	let name = document.getElementById("name");
+	let email = document.getElementById("email");
+	let cellphone = document.getElementById("cellphone");
+    const tappayStatus = TPDirect.card.getTappayFieldsStatus()
+
+
+    if (tappayStatus.canGetPrime === false) {
+        alert('can not get prime')
+        return
+    }
+    TPDirect.card.getPrime((result) => {
+        if (result.status !== 0) {
+            alert('something wrong,reason:' + result.msg)
+            return
+        }
+		let bodydata = {
+			"prime":result.card.prime,
+			"order":{
+				"price":coinrequest,
+				"trip":{
+					"attraction":{
+						"id":idrequest,
+						"name":titlenode.data,
+						"address":locationnode.data,
+						"image":url
+					},
+					"date":datenode.data,
+					"time":istime
+				},
+				"contact":{
+					"name":name.value,
+					"email":email.value,
+					"phone":cellphone.value
+				}
+			}
+		}
+		let src = "/api/order";
+		fetch(src, {method:"POST",body:JSON.stringify(bodydata),headers:{"content-type":"application/json"}}
+		).then(response => response.json()
+		).then(result => {
+			if (result["error"]){
+				alert(result["message"])
+			}else{
+				let ordernumber = result["data"]["number"];
+				document.location.href = "/thankyou?number=" + ordernumber ;
+			}
+			
+		})
+			
+    })
+})
+
+</script>
 </body>
 </html>

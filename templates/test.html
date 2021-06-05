@@ -1,3 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MVC in Front-End</title>
+</head>
+<body>
+	<h3>產品資料</h3>
+	<div id="list"></div>
+	<script>
+		/*
+			MVC (Model-View-Controller)
+			資料處理 - 畫面處理 - 控制流程
+		*/
+		// models
+		let models={
+			data:null,
+			removeProductData:function(name){
+				this.data=this.data.filter((product)=>{
+					return product.name!==name;
+				});
+			},
+			getProductData:function(){
+				let url="https://cwpeng.github.io/live-records-samples/data/products.json";
+				return fetch(url).then((response)=>{
+					return response.json();
+				}).then((result)=>{
+					this.data=result;
+				});
+			}
+		};
+		// views
+		let views={
+			renderData:function(){
+				const list=document.querySelector("#list");
+				list.innerHTML=""; // 先清空畫面
+				models.data.forEach((product)=>{
+					const item=document.createElement("div");
+					item.textContent=product.name;
+					item.addEventListener("click", controller.removeProduct);
+					list.appendChild(item);
+				});
+			}
+		}
+		// controllers
+		let controller={
+			removeProduct:function(e){
+				models.removeProductData(e.currentTarget.textContent);
+				views.renderData();
+			},
+			init:function(){
+				models.getProductData().then(()=>{
+                    console.log(models.getProductData().then())
+					views.renderData();
+				});
+			}
+		};
+		controller.init();
+		/* 以下直覺式的寫法
+		let url="https://cwpeng.github.io/live-records-samples/data/products.json";
+		fetch(url).then((response)=>{
+			return response.json();
+		}).then((result)=>{
+			const list=document.querySelector("#list");
+			result.forEach((product)=>{
+				const item=document.createElement("div");
+				item.textContent=product.name;
+				item.addEventListener("click", function(){
+					list.removeChild(item);
+				});
+				list.appendChild(item);
+			});
+		});
+		*/
+	</script>
+</body>
+</html>
+
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -158,11 +239,12 @@ a{
     flex: none;
 }	
 #biggallery{
+    
 	margin-right:auto;margin-left:auto;
     width:540px;
 	height:406px;
-    -webkit-transition: background 0.2s;
-    transition: background 0.2s;
+    -webkit-transition: background 0.5s;
+    transition: background 0.5s;
 }
 .arrow{
     height:36px;
@@ -170,7 +252,6 @@ a{
     position: relative;top:185px;
     opacity: 0.7;
 }
-
 #left{
     width:36px;height:36px;
     flex:auto;
@@ -382,15 +463,13 @@ input[type = radio]:checked{
 }									
 </style>
 <script>
-let patterns = {
-    data:null
-}
 var arrowpos = 0;
 var count = 0;
 var howmany = 0 ;
 let state;
 let p;
 window.addEventListener("load", event => {
+
     let black = document.querySelector(".black");
     let singin = document.getElementById("singin");
 	let singup = document.getElementById("singup");
@@ -564,7 +643,6 @@ function start(){
 		return response.json();												
 	}).then(function(result){
         var x = result["data"]["images"];
-        patterns.data = x ;
         p = x[count];
         //計算圖片張數
         howmany = countpattern(count, x);             
@@ -669,31 +747,35 @@ function countpattern(count,x){
 //更換圖片                                                                                  
 function changepattern(who){
     count = 0;
-    var biggallery = document.getElementById("biggallery") ;
-    if(who == 1){
-        arrowpos += 1;
+    let data = document.getElementById("name");
+    let src = "/api/attraction/" + data.textContent;
+    fetch(src).then(function(response){										
+		return response.json();												
+	}).then(function(result){
+        var x = result["data"]["images"];
+        var pattern = document.getElementById("biggallery") ;
+        if(who == 1){
+            arrowpos += 1;
+        }else{
+            arrowpos -= 1;
+        }
         if (arrowpos > (howmany - 1)){
             arrowpos = howmany - 1;
-            return ;
-        }
-        biggallery.style.backgroundPosition = "bottom 0px left 540px" ; 
-    }else{
-        arrowpos -= 1;
-        if (arrowpos < 0){
+            return;
+        }else if (arrowpos < 0){
             arrowpos = 0;
-            return ;
-        }
-        biggallery.style.backgroundPosition = "bottom 0px right 540px" ; 
-    }
-    setTimeout(() => {
-        biggallery.style.backgroundImage = "url(" + (patterns.data)[arrowpos] + ")" ;
-        biggallery.style.backgroundPosition = " 0px 0px" ;
+            return
+        } 
+        let p = x[arrowpos] ;
+        let patternurl = "url(" + p + ")";
+        pattern.style.backgroundImage = patternurl ;
+        pattern.style.backgroundRepeat = "no-repeat";
+        pattern.style.backgroundSize = "cover";
         var circle = document.getElementById("circle");
-
+        var right = document.getElementById("right");
         circle.innerHTML = "" ;
         createcircle(circle);
-    }, 300);
-    
+    })
 }
 function register(){
     if (state !== null){

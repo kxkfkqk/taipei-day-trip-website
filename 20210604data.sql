@@ -109,11 +109,10 @@ DROP TABLE IF EXISTS `test`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `test` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `ordernumber` bigint NOT NULL AUTO_INCREMENT,
+  `id` varchar(255) NOT NULL,
+  PRIMARY KEY (`ordernumber`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,8 +121,44 @@ CREATE TABLE `test` (
 
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
-INSERT INTO `test` VALUES (1,'哈哈哈哈','2021-04-09 21:37:57');
+INSERT INTO `test` VALUES (1,'很好'),(2,'哈哈');
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `thisorder`
+--
+
+DROP TABLE IF EXISTS `thisorder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `thisorder` (
+  `item` bigint NOT NULL AUTO_INCREMENT,
+  `ordernumber` varchar(255) NOT NULL,
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `price` varchar(255) NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `time` varchar(255) NOT NULL,
+  `contactname` varchar(255) NOT NULL,
+  `contactemail` varchar(255) NOT NULL,
+  `contactphone` varchar(255) NOT NULL,
+  `paystate` varchar(255) NOT NULL,
+  `ordertime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`item`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `thisorder`
+--
+
+LOCK TABLES `thisorder` WRITE;
+/*!40000 ALTER TABLE `thisorder` DISABLE KEYS */;
+INSERT INTO `thisorder` VALUES (1,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 12:58:12'),(2,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 12:59:05'),(3,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:01:02'),(4,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:01:49'),(5,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:03:08'),(6,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:03:41'),(7,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:04:19'),(8,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:05:19'),(9,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:07:26'),(10,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:09:58'),(11,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:11:29'),(12,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:12:15'),(13,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:13:48'),(14,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:14:33'),(15,'202100001','1','新北投溫泉區','臺北市  北投區中山路、光明路沿線','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg','2500','2021-05-05','afternoon','123','123@gmail.com','123','已付款','2021-06-02 13:15:35'),(16,'202100001','20','長榮海事博物館','臺北市  中正區中山南路11號','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11002524.jpg','2500','2021-06-24','afternoon','123','123@gmail.com','123','已付款','2021-06-03 02:07:15'),(17,'202100001','7','關渡、金色水岸、八里左岸自行車道','臺北市  北投區關渡','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000979.jpg','2500','2021-06-30','afternoon','123','123@gmail.com','123','已付款','2021-06-03 02:19:00'),(18,'202100001','2','bekele','臺北市  大同區環河北路一段','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000340.jpg','2000','2021-06-29','morning','123','123@gmail.com','123','已付款','2021-06-03 05:11:04'),(19,'202100001','2','bekele','臺北市  大同區環河北路一段','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000340.jpg','2000','2021-06-30','morning','123','123@gmail.com','123','已付款','2021-06-03 05:19:01'),(20,'202100001','7','bekele','臺北市  北投區關渡','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000979.jpg','2500','2021-06-30','afternoon','123','123@gmail.com','123','已付款','2021-06-03 05:35:06'),(21,'202100001','5','bekele','臺北市  北投區光明路251號','http://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C1/D878/E726/F304/2d6e8b50-76ce-4b7e-a795-0357cd6f2b3e.jpg','2500','2021-06-30','afternoon','123','123@gmail.com','123','已付款','2021-06-03 11:55:29'),(22,'202100001','2','bekele','臺北市  大同區環河北路一段','http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000340.jpg','2500','2021-06-30','afternoon','123','123@gmail.com','123','已付款','2021-06-03 14:29:36'),(23,'202100002','15','bekele','臺北市  信義區市府路1號1-4樓','http://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D6/E578/F270/f6f669d9-997f-48c0-845a-be267b3d6ad5.jpg','2500','2021-06-30','afternoon','123','123@gmail.com','123','已付款','2021-06-03 14:36:14'),(24,'202100003','11','bekele','臺北市  萬華區廣州街211號','http://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D226/E920/F665/1f26af86-e907-44c9-b4d7-5c498dacfc6c.jpg','2500','2021-06-15','afternoon','123','123@gmail.com','123','已付款','2021-06-03 20:45:34'),(25,'202100001','3','bekele','臺北市  士林區福林路60號','http://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D7/E150/F719/71eb4b56-f771-43bc-856c-2fb265a5cc6e.jpg','2000','2021-06-23','morning','123','123@gmail.com','123','已付款','2021-06-04 11:01:45');
+/*!40000 ALTER TABLE `thisorder` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -139,7 +174,7 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,6 +183,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'bekele','10000m@gmail.com','isgod'),(2,'小明','321@gmail.com','123');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +196,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-14 18:56:48
+-- Dump completed on 2021-06-04 11:08:32

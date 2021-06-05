@@ -6,6 +6,9 @@ import pymysql
 from flask import render_template
 from flask import session
 from flask import redirect
+import requests
+
+
 app=Flask(__name__, static_folder = "public", static_url_path = "/")
 app.secret_key = "helloFlaskeefdsfsdfsdfwefwec"
 app.config["JSON_AS_ASCII"]=False
@@ -13,7 +16,7 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 
 db = pymysql.connect(host = "localhost", user = "root", password = "Lqsym233!", database = "website")
 cursor = db.cursor()
-
+x = {"number":0}
 # Pages
 @app.route("/")
 def index():
@@ -30,7 +33,8 @@ def booking():
 		return redirect("/")
 @app.route("/thankyou")
 def thankyou():
-	return render_template("thankyou.html")
+	data = request.args.get("number")
+	return render_template("thankyou.html", name = data)
 @app.route("/api/attractions")
 def attractions():
 	alldata = []
@@ -130,7 +134,7 @@ def attractions():
 						"mrt":mrt,
 						"latitude":latitude,
 						"longitude":longitude,
-						"imgages":imgages
+						"images":imgages
 					}]
 				alldata += data
 			if count  <= (page + 10):
@@ -274,6 +278,14 @@ def apiuserdelete():
 		session.pop("id")
 		session.pop("name")
 		session.pop("email")
+		if "time" in session:
+			session.pop("date")
+			session.pop("time")
+			session.pop("price")
+			session.pop("registername")
+			session.pop("address")
+			session.pop("image")
+			session.pop("attractionId")
 		return json.dumps({
 			"ok":True
 		})
@@ -286,19 +298,19 @@ def apibookingget():
 	try:
 		if "email" in session:
 			if "attractionId" in session:
-				url = "http://127.0.0.1:3000/api/attraction/" + session["attractionId"]
+				url = "http://13.231.74.51:3000//api/attraction/" + session["attractionId"]
 				with req.urlopen(url) as response:
 					data = json.load(response)
 				session["registername"] = data["data"]["name"]
 				session["address"] = data["data"]["address"]
-				session["image"] = data["data"]["images"][0]
+				session["images"] = data["data"]["images"]
 				return json.dumps({
 					"data":{
 						"attraction":{
 							"id":session["attractionId"],
 							"name":session["registername"],
 							"address":session["address"],
-							"image":session["image"]
+							"image":session["images"]
 						},
 						"date":session["date"],
 						"time":session["time"],
@@ -318,7 +330,7 @@ def apibookingget():
 	except:
 		return json.dumps({
 				"error":True,
-				"message":"未取得資料"
+				"message":"程式出現錯誤,未取得資料"
 			})
 	
 @app.route("/api/booking", methods = ["POST"])
@@ -345,7 +357,7 @@ def apibookingdelete():
 		session.pop("price")
 		session.pop("registername")
 		session.pop("address")
-		session.pop("image")
+		session.pop("images")
 		session.pop("attractionId")
 		return json.dumps({
 			"ok":True
@@ -355,4 +367,100 @@ def apibookingdelete():
 			"error":True,
 			"message":"系統出錯"
 		})
+
+@app.route("/api/order/<ordernumber>")
+def apiorderget(ordernumber):
+	if "email" in session:
+		if session[ordernumber] == None:
+			return json.dumps({
+				"data":None
+			})
+		else:
+			return json.dumps(
+				session[ordernumber]
+			,ensure_ascii = False)
+	else:
+		return json.dumps({
+				"data":"未登入系統"
+			},ensure_ascii = False)
+@app.route("/api/order", methods = ["POST"])
+def apiorderpost():
+	# try:
+	#確認登入狀況,以email來驗證
+	if "email" not in session:
+		return json.dumps({
+			"error": True,
+			"message": "未登入會員,請正常連線"
+		},ensure_ascii = False)
+	#抓到前端送來的資料,並存放到session裡面
+	data = request.get_json()
+	x["number"] += 1 ; session["ordernumber"] = str(202100000 + x["number"])
+	session["thisid"] = data["order"]["trip"]["attraction"]["id"]; session["registername"] =  data["order"]["trip"]["attraction"]["name"]; session["address"] =  data["order"]["trip"]["attraction"]["address"]; session["image"] =  data["order"]["trip"]["attraction"]["image"]
+	session["price"] = data["order"]["price"]; session["date"] = data["order"]["trip"]["date"]; session["time"] = data["order"]["trip"]["time"]
+	session["contactname"] = data["order"]["contact"]["name"]; session["contactemail"] = data["order"]["contact"]["email"]; session["contactphone"] = data["order"]["contact"]["phone"]
+	session[session["ordernumber"]] = {
+		"data": {
+			"number": session["ordernumber"],
+			"price": session["price"],
+			"trip": {
+			"attraction": {
+				"id": session["thisid"],
+				"name": session["registername"],
+				"address": session["address"],
+				"image": session["image"]
+			},
+			"date": session["date"],
+			"time": session["time"]
+			},
+			"contact": {
+			"name": session["contactname"],
+			"email": session["contactemail"],
+			"phone": session["contactphone"]
+			},
+			"status": 1
+		}
+	}
+
+	userinfo = """INSERT INTO thisorder (ordernumber, id, name, address, image, price, date, time, contactname, contactemail, contactphone, paystate) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '未付款')"""%(session["ordernumber"], session["thisid"], session["name"], session["address"], session["image"], session["price"], session["date"], session["time"], session["contactname"], session["contactemail"], session["contactphone"])
+	cursor.execute(userinfo)
+	db.commit()
+	
+	myjson = {
+		"prime": data["prime"],
+		"partner_key": "partner_XzCtS627kYMVlz6jeQThQZC1VxqZznceaJn571qu1ADvNsMC88utdRv0",
+		"merchant_id": "sosqoo78902000_TAISHIN",
+		"details":"TapPay Test",
+		"amount": data["order"]["price"],
+		"cardholder": {
+			"phone_number": data["order"]["contact"]["phone"],
+			"name": data["order"]["contact"]["name"],
+			"email": data["order"]["contact"]["email"],
+		},
+	}
+	url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
+	payresult = requests.post(url, json = myjson, headers = {"Content-Type":"application/json","x-api-key":"partner_XzCtS627kYMVlz6jeQThQZC1VxqZznceaJn571qu1ADvNsMC88utdRv0"}, timeout = 30000)
+	status = payresult.json()
+	if (status["status"] == 0):
+		paystate = """UPDATE thisorder SET paystate = '已付款' WHERE ordernumber = '%s'"""%(session["ordernumber"])
+		cursor.execute(paystate)
+		db.commit()
+		return json.dumps({
+			"data": {
+				"number": session["ordernumber"],
+				"payment": {
+				"status": 0,
+				"message": "付款成功"
+				}
+			}
+		}, ensure_ascii = False)
+	else:
+		return json.dumps({
+			"error": True,
+			"message": "付款失敗,錯誤原因:" + status["msg"] + "訂單編號:" + str(session["ordernumber"])
+		},ensure_ascii = False)
+	# except:
+	# 	return json.dumps({
+	# 			"error": True,
+	# 			"message": "後端程序錯誤"
+	# 		},ensure_ascii = False)
 app.run(host = "0.0.0.0", port=3000)
