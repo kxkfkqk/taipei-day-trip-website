@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>台北一日遊-感謝頁面</title>
+<style type="text/css">
+
+a{
+	text-decoration:none;
+}
+body{
+	margin:0;
+}
+.position{
+	position:fixed; top:0;z-index: 1000;
+	width:100%;
+	background: #FFffff;
+}
+.top{
+    margin-right: auto;margin-left: auto;
+	display:flex;
+	justify-content: flex-end;
+	align-items: center;
+    width: 1200px;
+    height:54px;
+    background: #FFffff;
+	
+}
+.top button{
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+	border: none;  
+	outline: none;cursor: pointer;
+	background-color: #ffffff;    
+	color:#666666;
+}
+.top button:hover{
+    font-size:20px;
+    color:#000000;
+}
+.topleft{
+	flex:auto;
+    width:150px;
+	height:34px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 34px;
+	color: #448899;
+}
+.topleft a{
+    color: #448899;
+}		
+.topleft a:hover{
+    color:#00FFFF;
+}		
+#topmiddle{
+	margin-right:5px;
+	text-align: center;      
+	width:90px;
+	height:34px;
+	line-height: 34px; 
+    flex: none;
+}
+#topright{     
+	text-align: center;
+	width:90px;
+	height:34px;
+	line-height: 34px; 
+    flex: none;
+}
+
+#someword{
+    position:relative;right:450px;
+    margin-right: auto;margin-left: auto;
+    width:300px;margin-top: 30px;
+    height:auto;line-height: 30px;
+    -webkit-transition: color 3s,font-size 1s;
+    transition: color 3s,font-size 1s;
+}
+#someword:hover{
+    font-size: 20px;
+}
+
+#photot{		
+    
+	width:1200px;margin-right: auto;margin-left: auto;
+    margin-top:50px;height:750px;
+    
+}
+#photot img{
+    opacity: 1;
+    position: absolute;
+    margin-top: 80px;height:750px;width:1200px;
+    -webkit-transition: opacity 2s;
+    transition: opacity 2s;
+}
+
+
+
+
+.bottom{
+	position: relative;top:80px;
+	width: 100%;
+	height: 100px;
+	line-height: 100px;
+	background: #757575;
+}
+.bottomword{
+	margin-right:auto;margin-left:auto;
+	width: 284px;
+	height: 14px;
+	font-weight: bold;
+	font-size: 16px;
+	color: #FFFFFF;
+}
+
+@media screen and (max-width:1200px){
+	.top{
+		width:100%;
+	}
+	#someword{
+		right:150px;
+	}
+    #photot, #photot img{
+        width:600px;
+        height: 375px;
+    }
+    
+}				
+@media screen and (max-width: 700px){
+    #photot, #photot img{
+        width:320px;
+        height: 200px;
+    }
+    #someword{
+        right:10px;
+    }
+    #bottom {
+        top:0px;
+    }
+}
+</style>
+
+<script>
+let changenumber = 0;
+let state = "0";
+let count = 0;
+let ccount = 0;
+let sequence = 999;
+let patternnumber = 0;
+let patterntotal = 0;
+let color = ["#006000","#007500","#009100","#00A600","#00BB00","#00DB00","#00EC00"]
+let auto ;
+let autodisappear = setInterval(disappear,3000)
+
+function disappear(){
+    let photot = document.getElementById("photot");
+    let img = photot.getElementsByTagName("img");
+
+    img[changenumber].style.opacity = "0";
+    changenumber += 1;
+    if (changenumber > patterntotal){
+        changenumber = 0;
+    }
+    img[changenumber].style.opacity = "1";
+
+}
+
+function autopattern(){
+    let src = "/api/booking" ;
+    fetch(src).then(response => response.json()
+    ).then(result => {
+        while(true){
+            if (result["data"]["attraction"]["image"][count] === undefined){
+
+                patterntotal = count - 1;
+                return ;
+                
+                
+            }else{
+                let photot = document.getElementById("photot");
+                let pattern = document.createElement("img");
+                pattern.src = result["data"]["attraction"]["image"][count];
+                photot.appendChild(pattern);
+                let img = photot.getElementsByTagName("img");
+                if (count > 0){
+                    img[count].style.opacity = "0";
+                }
+                count += 1;
+               
+            }
+        }
+    })
+}
+
+function singout(){
+	let src = "/api/user" ;
+	fetch(src,{method:"DELETE"}
+	).then(function(response){
+		return response.json()
+	}).then(function(result){
+		if (result["ok"]){
+			document.location.href = "/"
+		}else{
+			alert("系統錯誤")
+			document.location.href = "/"
+		}
+	})
+}
+function register(){
+    document.location.href = "/booking";
+}
+autopattern();
+// let models = {
+//     data:null,
+//     getData:function(){
+//         let src = "/api/booking" ;
+//         fetch(src).then(response => response.json()
+//         ).then(result => {
+//             this.data = result ;
+//             console.log("hi")
+//         })
+//     },
+//     singout:function(){
+//         let src = "/api/user" ;
+//         fetch(src,{method:"DELETE"}
+//         ).then(function(response){
+//             return response.json()
+//         }).then(function(result){
+//             if (result["ok"]){
+//                 document.location.href = "/"
+//             }else{
+//                 alert("系統錯誤")
+//                 document.location.href = "/"
+//             }
+//         })
+//     }
+// }
+// let views = {
+//     pattern:function(){
+//         let result = models.data ;
+//         console.log(result)
+//         while(true){
+//             if (result["data"]["attraction"]["image"][count] === undefined){
+//                 patterntotal = count - 1;
+//                 return ;
+//             }else{
+//                 let photot = document.getElementById("photot");
+//                 let pattern = document.createElement("img");
+//                 pattern.src = result["data"]["attraction"]["image"][count];
+//                 photot.appendChild(pattern);
+//                 let img = photot.getElementsByTagName("img");
+//                 if (count > 0){
+//                     img[count].style.opacity = "0";
+//                 }
+//                 count += 1;
+               
+//             }
+//         }
+//     },
+//     changepattern:function(){
+//         let photot = document.getElementById("photot");
+//         let img = photot.getElementsByTagName("img");
+
+//         img[changenumber].style.opacity = "0";
+//         changenumber += 1;
+//         if (changenumber > patterntotal){
+//             changenumber = 0;
+//         }
+//         img[changenumber].style.opacity = "1";
+//     }
+// }
+// let controolls = {
+//     init:function(){
+//         models.getData().then( () => {
+//             views.pattern() ;
+//         }) ;
+//     },
+//     handleViews:function(){
+//         views.pattern() ;
+//     }
+// }
+// controolls.init();
+</script>
+</head>
+<body>
+
+<div class = "position" id = "position">
+	<div class = "top">
+		<div class = "topleft"><a href = "/">台北一日遊</a></div>
+		<button onclick = "register();" id = "topmiddle">預定行程</button>
+		<button onclick = "singout();" id = "topright">登出系統</button>
+	</div>
+</div>
+
+<div style = "height:54px;"></div>
+<div id = "someword">
+    <div>訂單編號:{{name}},</div>
+    <div style = "height:25px;"></div>
+    <div>請記住您的訂單編號,以方便查詢,</div>
+    <div style = "height:25px;"></div>
+    <div>感謝您的支持,歡迎再度光臨！！</div>
+</div>
+
+<div id="photot">
+    
+</div>
+<div style = "height:200px;"></div>
+<div class = "bottom" id = "bottom">
+	<div class = "bottomword">COPYRIGHT © 2021 台北一日遊</div>
+</div>
+</body>
+<script>
+    
+let autocolor = setInterval(colorchange,3000)
+colorchange();
+function colorchange(){
+    let someword = document.getElementById("someword");
+
+    someword.style.color = color[ccount];
+
+    ccount += 1;
+    if (ccount === 7){
+        ccount = 0;
+    }
+}
+</script>
+</html>
